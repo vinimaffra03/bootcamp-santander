@@ -1,10 +1,11 @@
 # Declaracao inicial das variaveis de status da conta e acoes bancarias
-saldo = float(0);
-valor_saque = round(0.00, 2);
+saldo = float(0)
+valor_saque = round(0.00, 2)
+extrato = []
 
 # exibir saldo
 def exibe_saldo():
-    print('+         Seu saldo atual é de : R${:.2f}        +'.format(saldo))  
+    print('+         Seu saldo atual é de : R${:.2f}         +'.format(saldo))  
 
 # Interface simples do banco
 
@@ -31,7 +32,9 @@ while True:
     print('+-----------------------------------------------+')
     print('+         4 - REALIZAR SAQUE :                  +')
     print('+-----------------------------------------------+')
-    print('+         5 - APENAS SAIR :                     +')
+    print('+         5 - CONSULTAR EXTRATO                 +')
+    print('+-----------------------------------------------+')
+    print('+         6 - APENAS SAIR :                     +')
     print('+-----------------------------------------------+')
 
     # Decidindo qual acao realizar no banco
@@ -54,6 +57,9 @@ while True:
 
                 # alterando valor atual do saldo/ atualizando
                 saldo += valor_deposito
+                
+                # adicionando ao extrato 
+                extrato.append(f"Depósito TED: R${valor_deposito:.2f}")
 
                 print('+-----------------------------------------------+')
                 print('+             AGUARDE UM INSTANTE...            +')
@@ -69,8 +75,14 @@ while True:
                 print('+               Depósito via PIX                +')
                 print('+-----------------------------------------------+')
 
+                # solicitando valor de pix para o usuario
                 valor_deposito = float(input('+   Insira o valor no qual deseja depositar : '))
+
+                # alterando valor atual do saldo atualizado
                 saldo += valor_deposito
+
+                # adicionando ao extrato 
+                extrato.append(f"Depósito PIX: R${valor_deposito:.2f}")
 
                 print('+-----------------------------------------------+')
                 print('+             AGUARDE UM INSTANTE...            +')
@@ -88,22 +100,42 @@ while True:
 
                 # solicitando valor de deposito ao usuario
                 valor_saque = float(input('+   Insira o valor no qual deseja sacar : '))
+                
+                if valor_saque <= saldo:
+                    # alterando valor atual do saldo/ atualizando
+                    saldo -= valor_saque
 
-                # alterando valor atual do saldo/ atualizando
-                saldo -= valor_saque
+                    # adicionando ao extrato 
+                    extrato.append(f"Saque de : R${valor_saque:.2f}")
 
+                    print('+-----------------------------------------------+')
+                    print('+             AGUARDE UM INSTANTE...            +')
+                    print('+-----------------------------------------------+')
+                    print('+        Saque de : R${:.2f} finalizado !       +'.format(valor_saque))
+                    print('+-----------------------------------------------+')
+                    exibe_saldo()
+                    print('+-----------------------------------------------+')
+
+                else: 
+                    print('+-----------------------------------------------+')
+                    print('+        SALDO INSUFICIENTE PARA SAQUE !        +')
+            
+            case "5":
+                print('===========         EXTRATO           ===========')
                 print('+-----------------------------------------------+')
-                print('+             AGUARDE UM INSTANTE...            +')
-                print('+-----------------------------------------------+')
-                print('+        Saque de : R${:.2f} finalizado !       +'.format(valor_saque))
-                print('+-----------------------------------------------+')
-                exibe_saldo()
-                print('+-----------------------------------------------+')
+
+                # condicional se extrato tiver preenchido para cada item no extrato printar o item caso nao tiver exibir mensagem e exibir saldo
+                if extrato:
+                    for item in extrato:
+                        print('+  =  {} '.format(item))
+                else:
+                    print("Não há movimentações.")
+                    exibe_saldo()
 
             # opcao para sair do menu
-            case "5":
+            case "6":
                 print('+-----------------------------------------------+')
-                print('        Agradecemos por usar nosso app! =D        ')
+                print('        Agradecemos por usar nosso app! =D       ')
                 print('+-----------------------------------------------+')
                 exit()
 
